@@ -22,7 +22,7 @@ public static boolean isUpperCase(String s)
 {
     for (int i=0; i<s.length(); i++)
     {
-        if (Character.isLowerCase(s.charAt(i)))
+        if (!Character.isUpperCase(s.charAt(i)))
         {
             return false;
         }
@@ -39,7 +39,7 @@ public static boolean isUpperCase(String s)
            while(parsing.hasNext()){
                String read = parsing.next();
                if(read.equals("FALL")) break;
-               if(isUpperCase(read)){
+               if(isUpperCase(read) || read.contains("&")){
                    System.out.print(read + " "); 
                    String nexRead = parsing.next();
                    if(isUpperCase(nexRead))
