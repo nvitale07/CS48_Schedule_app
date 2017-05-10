@@ -6,14 +6,13 @@
 package course.catalog.access;
 
 import java.util.Scanner;
-//import java.net.*;
-//import java.io.*;
+
+import java.io.*;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
-//import org.jsoup.parser.*;
 import org.jsoup.examples.HtmlToPlainText;
-//import org.jsoup.select.Elements;
+
 
 
 public class CourseCatalogAccess {
