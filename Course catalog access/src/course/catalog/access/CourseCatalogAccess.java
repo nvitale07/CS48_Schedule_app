@@ -6,14 +6,14 @@
 package course.catalog.access;
 
 import java.util.Scanner;
-import java.net.*;
-import java.io.*;
+//import java.net.*;
+//import java.io.*;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.*;
-import org.jsoup.parser.*;
+//import org.jsoup.parser.*;
 import org.jsoup.examples.HtmlToPlainText;
-import org.jsoup.select.Elements;
+//import org.jsoup.select.Elements;
 
 
 public class CourseCatalogAccess {
@@ -39,7 +39,7 @@ public static boolean isUpperCase(String s)
            while(parsing.hasNext()){
                String read = parsing.next();
                if(read.equals("FALL")) break;
-               if(isUpperCase(read) || read.contains("&")){
+               if(isUpperCase(read) || (read.contains("&") && read.length() != 1)){
                    System.out.print(read + " "); 
                    String nexRead = parsing.next();
                    if(isUpperCase(nexRead))
