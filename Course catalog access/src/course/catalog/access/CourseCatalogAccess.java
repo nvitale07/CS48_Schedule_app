@@ -55,6 +55,10 @@ public static boolean isUpperCase(String s)
                 
                }
            }
+           Scanner newparsing = new Scanner(test.getPlainText(newDoc));
+           while(newparsing.hasNext()){
+               
+           }
            
     }
 }
