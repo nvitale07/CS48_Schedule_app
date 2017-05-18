@@ -29,32 +29,30 @@ public static boolean isUpperCase(String s)
 
     
     public static void main(String[] args) throws Exception {
-           Document newDoc = Jsoup.connect("http://www.ratemyprofessors.com/campusRatings.jsp?sid=1077").get();
-           PrintWriter writer = new PrintWriter("Profrate.data", "UTF-8");
-            
+           Document professor = Jsoup.connect("http://www.ratemyprofessors.com/campusRatings.jsp?sid=1077").get();
+           PrintWriter RatingWriter = new PrintWriter("ProfRate.data", "UTF-8");
            
-           
-           HtmlToPlainText test = new HtmlToPlainText();
-           Scanner parsing = new Scanner(test.getPlainText(newDoc));
+           HtmlToPlainText textifier = new HtmlToPlainText();
+           Scanner profParse = new Scanner(textifier.getPlainText(professor));
            int counter = 1;
            
-           while(parsing.hasNext()){
+           while(profParse.hasNext()){
                
-               String read = parsing.next();
+               String read = profParse.next();
                if(read.equals("FALL")) break;
                if(isUpperCase(read) || (read.contains("&") && read.length() != 1)){
-                   writer.print("#"+ counter + "," + read); 
-                   String nexRead = parsing.next();
+                   RatingWriter.print("#"+ counter + "," + read); 
+                   String nexRead = profParse.next();
                    counter++;
                    if(isUpperCase(nexRead))
-                       writer.println("_"+ nexRead);
+                       RatingWriter.println("_"+ nexRead);
                    else
-                       writer.print("\n");
+                       RatingWriter.print("\n");
                    
                 
                }
            }
-           writer.close();
+           RatingWriter.close();
            File openMe = new File("Majors.data");
            Scanner newparsing = new Scanner(openMe);
            
