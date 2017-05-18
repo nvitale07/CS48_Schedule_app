@@ -63,7 +63,7 @@ public static boolean isUpperCase(String s)
            File openMe = new File("Departments.data"); //Opens the departments data file
            Scanner newparsing = new Scanner(openMe);
            
-           Response recons = Jsoup.connect("https://my.sa.ucsb.edu/Public/curriculum/coursesearch.aspx").method(Method.GET).execute(); //
+           Response recons = Jsoup.connect("https://my.sa.ucsb.edu/Public/curriculum/coursesearch.aspx").method(Method.GET).execute(); //reconnecting? Not sure if needed
            String SessionID = recons.cookie("ASP.NET_SessionId"); //Saves the sessionID cookie for later POST request
            String Ies = recons.cookie("ARRAffinity_my.sa.ucsb.edu_public"); //Gets the ARRAffinity cookie for later POST request
 
@@ -84,7 +84,7 @@ public static boolean isUpperCase(String s)
                    .cookie("ARRAffinity_my.sa.ucsb.edu_public", Ies)
                    .userAgent("Mozilla")
                    .method(Method.POST)
-                   .execute();
+                   .execute(); //Sends "click" for selection in dropdown
            
            Document recon = rescon.parse();
            String saveme = rescon.cookie("ASP.NET_SessionId");
