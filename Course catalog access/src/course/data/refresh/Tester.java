@@ -22,7 +22,7 @@ public class Tester {
         FileFormatter y = new FileFormatter();
         while(read.hasNextLine()){
         
-        y.createRating(read.nextLine().replaceAll("\\s+|\\n+||\\t+", "").toLowerCase());
+        y.createRatingNumbered(read.nextLine().replaceAll("\\s+|\\n+||\\t+", "").toLowerCase());
         }
         
         

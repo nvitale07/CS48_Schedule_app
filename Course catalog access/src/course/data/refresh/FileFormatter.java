@@ -104,8 +104,14 @@ public class FileFormatter {
             recall.add(pair);
             //String[] full1Split = full[1].split("\\s+");
             //System.out.println(full[1]);
-            if(full[1].split("\\s").length > 1)
-                deptCourseList.println("#"+counter+","+full[0]+"," + full[1].split("\\s+",2)[0]+","+full[1].split("\\s+",2)[1]+"," + full[2]+"," + full[3].toUpperCase()+","+findRating(full[1].split("\\s+")));
+            if(full[1].split("\\s").length > 1){
+                if(full[1].split("\\s")[0].equals("van".toUpperCase())){
+                    deptCourseList.println("#"+counter+","+full[0]+"," + full[1].split("\\s+",3)[0]+" "+full[1].split("\\s+",3)[1]+","+ full[1].split("\\s+",3)[2]+"," + full[2]+"," + full[3].toUpperCase()+","+findRating(full[1].split("\\s+")));
+                }
+                else
+                    deptCourseList.println("#"+counter+","+full[0]+"," + full[1].split("\\s+",2)[0]+","+full[1].split("\\s+",2)[1]+"," + full[2]+"," + full[3].toUpperCase()+","+findRating(full[1].split("\\s+")));
+                    
+            }
             else
               deptCourseList.println("#"+counter+","+full[0]+"," + full[1]+"," + full[2]+"," + full[3].toUpperCase()+","+findRating(full[1].split("\\s+")));  
             counter++;
@@ -143,8 +149,13 @@ public class FileFormatter {
             }
             if (exit == true) continue;
             recall.add(pair);
-            if(full[1].split("\\s").length > 1)
+            if(full[1].split("\\s").length > 1){
+                if(full[1].split("\\s")[0].equals("van".toUpperCase())){ 
+                    deptCourseList.println(full[0]+"," + full[1].split("\\s+",3)[0]+" "+full[1].split("\\s+",3)[1]+","+ full[1].split("\\s+",3)[2]+"," + full[2]+"," + full[3].toUpperCase()+","+findRating(full[1].split("\\s+")));
+                }
+                else
                 deptCourseList.println(full[0]+"," + full[1].split("\\s+",2)[0]+","+full[1].split("\\s+",2)[1]+"," + full[2]+"," + full[3].toUpperCase()+","+findRating(full[1].split("\\s+")));
+            }
              else
                 deptCourseList.println(full[0]+"," + full[1]+"," + full[2]+"," + full[3].toUpperCase()+","+findRating(full[1].split("\\s+")));
         }
