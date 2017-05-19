@@ -40,7 +40,7 @@ public class FileFormatter {
             //System.out.println(counter++);
             String point = ratingFind.nextLine();
             
-            if(point.equals(profname[0].toUpperCase().replaceAll("\\s", ""))){
+            if(point.contains(profname[0].toUpperCase().replaceAll("\\s", ""))){
                 matches.add(point);
             }
         }
@@ -70,7 +70,7 @@ public class FileFormatter {
         }
         
         
-        return "N.S";
+        return "NS";
     }
     
     public void createRatingNumbered(String department) throws Exception{
