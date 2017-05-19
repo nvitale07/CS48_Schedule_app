@@ -157,7 +157,7 @@ public class ScheduledTerminal {
                 days = split.get(3);
                 time = split.get(4);
                 rating = split.get(5);
-                if (rating.contains("D")) {
+                if (rating.contains("NS")) {
                     rating = "2.0";
                 }
                 menu.addCourse(course,last,other,days,time,rating,priority);
