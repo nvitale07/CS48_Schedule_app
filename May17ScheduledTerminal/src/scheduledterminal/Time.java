@@ -7,7 +7,7 @@ package scheduledterminal;
 
 import java.io.*;
 
-/**
+/** 
  *
  * @author Nick
  */
