@@ -73,7 +73,7 @@ public static boolean isUpperCase(String s)
 		    		String time = courseTime.text();
                                 
                                     //if(!professorName.equals("T B A")){
-                                        System.out.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
+                                        //System.out.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
                                         export.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
                                     //}
                                    //else{
