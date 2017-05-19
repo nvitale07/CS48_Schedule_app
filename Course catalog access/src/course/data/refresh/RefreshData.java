@@ -15,7 +15,7 @@ import org.jsoup.select.Elements;
 
 public class RefreshData {
     
-public static boolean isUpperCase(String s)
+private static boolean isUpperCase(String s)
 {
     for (int i=0; i<s.length(); i++)
     {
@@ -27,7 +27,7 @@ public static boolean isUpperCase(String s)
     return true;
 }
 
-    public static void curriculumSearch(PrintWriter export,String courseDpt, String quarter, String courseLvl) throws Exception {
+    private static void curriculumSearch(PrintWriter export,String courseDpt, String quarter, String courseLvl) throws Exception {
                     String catalogURL = "https://my.sa.ucsb.edu/public/curriculum/coursesearch.aspx";
 		    Response curriculumTables = Jsoup.connect(catalogURL).method(Method.GET).execute();
 		    Document curriculumTableDocument = curriculumTables.parse();
@@ -72,20 +72,20 @@ public static boolean isUpperCase(String s)
 		    		String day = courseDay.text();
 		    		String time = courseTime.text();
                                 
-                                    //if(!professorName.equals("T B A")){
-                                        //System.out.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
+                                    if(professorName.length() > 1 && !professorName.equals("T B A") && day.length() >= 1 && time.length() > 1){
+                                        System.out.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
                                         export.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
-                                    //}
+                                    }
                                    //else{
-                                        //System.out.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
-                                        //export.println(courNum.replaceAll("\\s+", "")+","+"TBA"+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
+                                    //    System.out.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
+                                      //  export.println(courNum.replaceAll("\\s+", "")+","+"TBA"+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
                                         //}
                                 }
                                     
            
     }
     
-    public static void RateMyProf() throws Exception {
+    public void RateMyProfUpdate() throws Exception {
            String searchURL = "http://www.ratemyprofessors.com/search.jsp?queryBy=teacherName&queryoption=HEADER&query=ucsb&facetSearch=true";
            String iterateThrURL = "http://www.ratemyprofessors.com";
            Document professor = Jsoup.connect(searchURL).get();
@@ -148,7 +148,7 @@ public static boolean isUpperCase(String s)
            
     }
     
-    public static void enumerateDepartments() throws Exception{
+    private static void enumerateDepartments() throws Exception{
                     //Connect to the course catalog
            String catalogURL = "https://my.sa.ucsb.edu/Public/curriculum/coursesearch.aspx";
            Document catalogDepartments = Jsoup.connect(catalogURL).get();
@@ -186,7 +186,7 @@ public static boolean isUpperCase(String s)
     }
 
     
-    public static void main(String[] args) throws Exception {
+    public RefreshData() throws Exception {
         enumerateDepartments();
         File departments = new File("dpt.data");
         Scanner dptReader = new Scanner(departments);
