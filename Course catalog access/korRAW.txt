@@ -1,0 +1,2 @@
+KOR20,PAI H I,MW,8:00am-9:15am
+KOR199,T B A,,

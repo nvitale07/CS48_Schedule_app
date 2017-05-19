@@ -71,15 +71,15 @@ public static boolean isUpperCase(String s)
 		    		String professorName = profs.text();
 		    		String day = courseDay.text();
 		    		String time = courseTime.text();
-                                if(title.length() > 1){
-                                    if(!professorName.equals("T B A")){
-                                        System.out.println(courNum.replaceAll("\\s+", "")+","+professorName.replaceAll("\\s+", ",")+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
-                                        export.println(courNum.replaceAll("\\s+", "")+","+professorName.replaceAll("\\s+", ",")+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
-                                    }
-                    }               //else{
-                                    //    System.out.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
-                                    //    export.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
-                                    //    }
+                                
+                                    //if(!professorName.equals("T B A")){
+                                        System.out.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
+                                        export.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
+                                    //}
+                                   //else{
+                                        //System.out.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
+                                        //export.println(courNum.replaceAll("\\s+", "")+","+"TBA"+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
+                                        //}
                                 }
                                     
            
@@ -192,8 +192,11 @@ public static boolean isUpperCase(String s)
         Scanner dptReader = new Scanner(departments);
         while(dptReader.hasNext()){
             String department = dptReader.nextLine();
-            String departmentNoSpace = department.replace("\\s+", "").toLowerCase();
-            String filename = departmentNoSpace + "rating.txt";
+            
+            String departmentNoSpace = department.replaceAll("\\t+|\\s+", "").toLowerCase();
+            
+            
+            String filename = departmentNoSpace + "RAW.txt";
             PrintWriter depCourses = new PrintWriter(new FileOutputStream(new File(filename)), true);
             curriculumSearch(depCourses,department,"20174","Undergraduate");
             depCourses.close();

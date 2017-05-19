@@ -1,6 +1,0 @@
-ASTRO1,,F,9:00am-9:50am
-ASTRO1,,W,1:00pm-1:50pm
-ASTRO1,,W,5:00pm-5:50pm
-ASTRO1,,W,4:00pm-4:50pm
-ASTRO1,,W,6:00pm-6:50pm
-ASTRO1,,M,4:00pm-4:50pm

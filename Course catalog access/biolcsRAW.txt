@@ -1,0 +1,2 @@
+BIOLCS10,T B A,W,3:00pm-4:50pm
+BIOLCS12,T B A,R,8:00am-8:50am
