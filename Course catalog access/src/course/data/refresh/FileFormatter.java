@@ -19,36 +19,58 @@ public class FileFormatter {
         System.out.print("Taking raw files and converting them to nice files...\n");
     }
     
-    public static String findRating(String lastname) throws Exception{
+    public static String findRating(String[] profname) throws Exception{
         File rates = new File("ProfRate.data");
+        
+        File dontHave = new File("ProfDepartments.txt");
+        ArrayList<String> ignore = new ArrayList();
+        Scanner dont = new Scanner(dontHave);
+        dont.useDelimiter("\\s+|\\n+");
+        while(dont.hasNext()){
+            String nextUp = dont.next();
+            ignore.add(nextUp.replaceAll("\\n+", "").toUpperCase());
+        }
+        
         Scanner ratingFind = new Scanner(rates);
         ArrayList<String> matches = new ArrayList();
         //String output = "";
-        
+        int counter = 0;
         
         while(ratingFind.hasNextLine()){
+            //System.out.println(counter++);
             String point = ratingFind.nextLine();
-            System.out.println(point);
-            for(int i = 0; i < point.split("\\s").length; i++){
-                if(point.split("\\s")[i].equals(lastname.toUpperCase().replaceAll("\\s", ""))){
-                    System.out.println("match!");
-                    matches.add(point);
-                }
+            
+            if(point.equals(profname[0].toUpperCase().replaceAll("\\s", ""))){
+                matches.add(point);
             }
         }
-        if(matches.isEmpty()){
-            return "NS";
+        ArrayList<String> finalMatches = new ArrayList();
+        while(!matches.isEmpty()){
+            int depth = 0;
+            Scanner poinParse = new Scanner(matches.get(matches.size()-1));
+                while(poinParse.hasNext()){
+                    String select = poinParse.next();
+                    if(!ignore.contains(select.toUpperCase())){
+                        if(depth == 0){
+                            //if(select.startsWith(firstLetter.toUpperCase())){
+                                finalMatches.add(matches.get(matches.size()-1));
+                            //}
+                        }
+                        depth++;
+                        //System.out.println(select);
+                    }
+                }
+            //System.out.println(matches.get(matches.size()-1));
+            matches.remove(matches.size()-1);
         }
-        else if(matches.size() == 1){
-            int size = matches.get(0).split("\\s+").length;
-            return matches.get(0).split("\\s")[size-1];
-        }
-        else{
-            return "";
+        
+        while(!finalMatches.isEmpty()){
+            return finalMatches.get(finalMatches.size()-1).split("\\s+")[finalMatches.get(finalMatches.size()-1).split("\\s+").length-1];
+            //finalMatches.remove(finalMatches.size()-1);
         }
         
         
-        //return output;
+        return "N.S";
     }
     
     public void createRatingNumbered(String department) throws Exception{
@@ -80,7 +102,12 @@ public class FileFormatter {
             }
             if (exit == true) continue;
             recall.add(pair);
-            deptCourseList.println("#"+counter+","+full[0]+"," + full[1]+"," + full[2]+"," + full[3]);
+            //String[] full1Split = full[1].split("\\s+");
+            //System.out.println(full[1]);
+            if(full[1].split("\\s").length > 1)
+                deptCourseList.println("#"+counter+","+full[0]+"," + full[1].split("\\s+",2)[0]+","+full[1].split("\\s+",2)[1]+"," + full[2]+"," + full[3].toUpperCase()+","+findRating(full[1].split("\\s+")));
+            else
+              deptCourseList.println("#"+counter+","+full[0]+"," + full[1]+"," + full[2]+"," + full[3].toUpperCase()+","+findRating(full[1].split("\\s+")));  
             counter++;
                
         }
@@ -116,9 +143,10 @@ public class FileFormatter {
             }
             if (exit == true) continue;
             recall.add(pair);
-            String rating = findRating("maass");
-            deptCourseList.println(full[0]+"," + full[1]+"," + full[2]+"," + full[3]+","+rating);
-               
+            if(full[1].split("\\s").length > 1)
+                deptCourseList.println(full[0]+"," + full[1].split("\\s+",2)[0]+","+full[1].split("\\s+",2)[1]+"," + full[2]+"," + full[3].toUpperCase()+","+findRating(full[1].split("\\s+")));
+             else
+                deptCourseList.println(full[0]+"," + full[1]+"," + full[2]+"," + full[3].toUpperCase()+","+findRating(full[1].split("\\s+")));
         }
         deptCourseList.close();
     }

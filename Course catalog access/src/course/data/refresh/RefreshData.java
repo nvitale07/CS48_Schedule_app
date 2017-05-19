@@ -3,6 +3,7 @@ package course.data.refresh;
 import java.util.Scanner;
 
 import java.io.*;
+import java.util.ArrayList;
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
 
@@ -73,7 +74,7 @@ private static boolean isUpperCase(String s)
 		    		String time = courseTime.text();
                                 
                                     if(professorName.length() > 1 && !professorName.equals("T B A") && day.length() >= 1 && time.length() > 1){
-                                        System.out.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
+                                        //System.out.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
                                         export.println(courNum.replaceAll("\\s+", "")+","+professorName+","+day.replaceAll("\\s+", "")+","+time.replaceAll("\\s+", ""));
                                     }
                                    //else{
@@ -91,6 +92,8 @@ private static boolean isUpperCase(String s)
            Document professor = Jsoup.connect(searchURL).get();
                    
            PrintWriter RatingWriter = new PrintWriter(new FileOutputStream(new File("ProfRate.data")));
+           PrintWriter departmentWriter = new PrintWriter(new FileOutputStream(new File("ProfDepartments.txt")));
+           ArrayList<String> department = new ArrayList();
            
            for(int i = 1; i < 134; ++i){
            Scanner searchParse = new Scanner(professor.select("li[class=listing PROFESSOR] a").toString());
@@ -111,30 +114,36 @@ private static boolean isUpperCase(String s)
                     String profDepartment = professor.select("div[class=result-title]").text();
                     if(profDepartment.length() == 0){
                         String professorInfo = professor.select("div[class=subject]").text();
-                        System.out.print(professorInfo.toUpperCase()+" ");
+                        //System.out.print(professorInfo.toUpperCase()+" ");
                         RatingWriter.print(professorInfo.toUpperCase()+" ");
+                        if(!department.contains(professorInfo)){
+                            department.add(professorInfo);
+                        }
                         
                         professorInfo = professor.select("div[class=rate-info hidden-md] div[class=name]").text();
-                        System.out.println(professorInfo.toUpperCase()+" NS");
+                        //System.out.println(professorInfo.toUpperCase()+" NS");
                         RatingWriter.println(professorInfo.toUpperCase()+" NS");
                         RatingWriter.close();
                         continue;
                         
                     }
                     String profInfo = profDepartment.substring(17, profDepartment.length()-90);
-                    System.out.print(profInfo.toUpperCase()+" ");
+                    //System.out.print(profInfo.toUpperCase()+" ");
                     RatingWriter.print(profInfo.toUpperCase()+" ");
+                    if(!department.contains(profDepartment)){
+                        department.add(profDepartment);
+                    }
                     
                     profInfo = professor.select("span[class=pfname]").text();
-                    System.out.print(profInfo.toUpperCase());
+                    //System.out.print(profInfo.toUpperCase());
                     RatingWriter.print(profInfo.toUpperCase());
                     
                     profInfo = professor.select("span[class=plname]").text();
-                    System.out.print(profInfo.toUpperCase()+" ");
+                    //System.out.print(profInfo.toUpperCase()+" ");
                     RatingWriter.print(profInfo.toUpperCase()+" ");
                     
                     profInfo = professor.select("div[class=grade]").text();
-                    System.out.println(profInfo.substring(0,3));
+                    //System.out.println(profInfo.substring(0,3));
                     RatingWriter.println(profInfo.substring(0,3));
                     RatingWriter.close();
                }
@@ -145,6 +154,11 @@ private static boolean isUpperCase(String s)
            }
            
            RatingWriter.close();
+           while(!department.isEmpty()){
+               departmentWriter.println(department.get(department.size()-1));
+               department.remove(department.size()-1);
+           }
+           departmentWriter.close();
            
     }
     
@@ -187,7 +201,7 @@ private static boolean isUpperCase(String s)
 
     
     public RefreshData() throws Exception {
-        enumerateDepartments();
+        /*enumerateDepartments();
         File departments = new File("dpt.data");
         Scanner dptReader = new Scanner(departments);
         while(dptReader.hasNext()){
@@ -202,7 +216,7 @@ private static boolean isUpperCase(String s)
             depCourses.close();
         }
         
-
+        */
     }
 }
     

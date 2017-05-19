@@ -15,7 +15,8 @@ import java.util.Scanner;
  */
 public class Tester {
     public static void main(String[] args) throws Exception{
-        //RefreshData x = new RefreshData();
+        RefreshData x = new RefreshData();
+        //x.RateMyProfUpdate();
         File departments = new File("dpt.data");
         Scanner read = new Scanner(departments);
         FileFormatter y = new FileFormatter();
@@ -23,7 +24,7 @@ public class Tester {
         
         y.createRating(read.nextLine().replaceAll("\\s+|\\n+||\\t+", "").toLowerCase());
         }
-        //y.findRating("CROUCH");
+        
         
     }
 }
