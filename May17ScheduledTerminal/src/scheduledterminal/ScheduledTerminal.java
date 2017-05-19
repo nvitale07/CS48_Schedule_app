@@ -48,8 +48,10 @@ public class ScheduledTerminal {
                 if (data.substring(1,2).compareTo(Integer.toString(subjectNumber)) == 0) {
                     shortSubjectID = data.substring(3);
                     shortSubjectID = shortSubjectID.toLowerCase();
+                    shortSubjectID = shortSubjectID.replaceAll(" ","");
                     subjectID = data.substring(3) + ".txt";
                     subjectID = subjectID.toLowerCase();
+                    subjectID = subjectID.replaceAll(" ","");
                     break;
                 }
             }
@@ -57,8 +59,10 @@ public class ScheduledTerminal {
                 if (data.substring(1,3).compareTo(Integer.toString(subjectNumber)) == 0) {
                     shortSubjectID = data.substring(4);
                     shortSubjectID = shortSubjectID.toLowerCase();
+                    shortSubjectID = shortSubjectID.replaceAll(" ","");
                     subjectID = data.substring(4) + ".txt";
                     subjectID = subjectID.toLowerCase();
+                    subjectID = subjectID.replaceAll(" ","");
                     break;
                 }
             }
@@ -85,10 +89,13 @@ public class ScheduledTerminal {
                 if (data.substring(1,2).compareTo(Integer.toString(subjectNumber2)) == 0) {
                     courseID = shortSubjectID + "rating.txt";
                     courseID = courseID.toLowerCase();
+                    courseID = courseID.replaceAll(" ","");
                     shortCourseID = data.substring(3);
                     shortCourseID = shortCourseID.toLowerCase();
+                    shortCourseID = shortCourseID.replaceAll(" ","");
                     numberedCourseID = subjectID + "ratingnumbered.txt";
                     numberedCourseID = numberedCourseID.toLowerCase();
+                    numberedCourseID = numberedCourseID.replaceAll(" ","");
                     break;
                 }
             }
@@ -96,10 +103,13 @@ public class ScheduledTerminal {
                 if (data.substring(1,3).compareTo(Integer.toString(subjectNumber2)) == 0) {
                     courseID = shortSubjectID + "rating.txt";
                     courseID = courseID.toLowerCase();
+                    courseID = courseID.replaceAll(" ","");
                     shortCourseID = data.substring(4);
                     shortCourseID = shortCourseID.toLowerCase();
+                    shortCourseID = shortCourseID.replaceAll(" ","");
                     numberedCourseID = subjectID + "ratingnumbered.txt";
                     numberedCourseID = numberedCourseID.toLowerCase();
+                    numberedCourseID = numberedCourseID.replaceAll(" ","");
                     break;
                 }
             }
@@ -158,19 +168,23 @@ public class ScheduledTerminal {
                     menu.printCourses();
                     System.out.println();
                 }
+                if (priority == 1) break;
             }
         }
         
-        if (coursesAdded == 10) {
+        if (coursesAdded == 20) {
             System.out.println("You have added the maximum number of classes.");
             System.out.println();
             break;
         }
             // make it so that it doesn't prompt this when under 3 classes
-        System.out.println("Would you like to add another course? Enter yes or no: ");
-        Scanner continueScanner = new Scanner(System.in);
-        String temp2 = continueScanner.nextLine();
-        System.out.println();
+        String temp2 = "yes";
+        if (coursesAddedList.size() >= 3) {
+            System.out.println("Would you like to add another course? Enter yes or no: ");
+            Scanner continueScanner = new Scanner(System.in);
+            temp2 = continueScanner.nextLine();
+            System.out.println();
+        }
         if (temp2.toLowerCase().contains("no")) {
             if (coursesAddedList.size() < 3) {
                 System.out.println("You must add at least 3 classes. Please add another class.");

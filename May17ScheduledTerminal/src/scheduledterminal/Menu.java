@@ -19,12 +19,15 @@ public class Menu {
     private int optimizations;
     Schedule [] schedules;
     int schedulesRequested;
+    int priorities;    // number of classes with priority 
+    int validSchedules;
 
     public Menu(){
         courses = new ArrayList<Course>();
         desired = 0;
         optimizations = 0;
         schedulesRequested = 0;
+        priorities = 0;
     }
 
 
@@ -35,6 +38,7 @@ public void addCourse(String course,String last,String other,String days,String 
         if (priority == 0) {
             priorityParameter = false;
         }
+        else priorities ++;
 
         //calculate end and begin doubles
         double begin = 0;
@@ -75,15 +79,30 @@ public void sortedAdd(Course course) {
             courses.add(course);
             return;
         }
+            
+            //adds to the proper rating spot (unless its a priority class)
+            
         for (Course x : courses) {
-            if (course.getProfessor().getRating() >= x.getProfessor().getRating()) {
-                courses.add(temp,course);
-                return;
+            if (course.getProfessor().getRating() > x.getProfessor().getRating()
+                    && !x.getPriority()) {
+                break;
             }
             temp++;
         }
-        courses.add(course);
-        return;
+        courses.add(temp,course);
+        
+        // account for priority
+        for (int a = temp; a > 0; a--){
+            if (!courses.get(a).getPriority()) break;
+            if (!courses.get(a-1).getPriority() || courses.get(a-1).getProfessor().getRating() 
+                   < courses.get(a).getProfessor().getRating()) {
+                Course c = courses.get(a);
+                courses.set(a, courses.get(a-1));
+                courses.set(a-1,c);
+            }
+             
+        }    
+        
     }
 
     public void deleteCourse(Course course) {
@@ -98,11 +117,12 @@ public void sortedAdd(Course course) {
         course.setPriority(priority);
     }
 
-    public void optimize(int desire){
-        desired = desire;
-        if (desired ==3) optimize3();
-        if (desired ==4) optimize4();
-        if (desired ==5) optimize5();
+    public void optimize(int d){
+        desired = d; // only classes that are not prioritized
+                       
+        if (desired == 3) optimize3();
+        if (desired == 4) optimize4();
+        if (desired == 5) optimize5();
 
     }
 
@@ -112,6 +132,7 @@ public void sortedAdd(Course course) {
             System.out.println("No Possible Valid Schedules");
             return;
         }
+
         System.out.println(schedules[schedulesRequested]);
         System.out.println();
         schedulesRequested++;
@@ -119,12 +140,16 @@ public void sortedAdd(Course course) {
     
     public void optimize3(){
         schedules = new Schedule[3];
-        Course lowest = courses.get(0);
-        int total=0;
-        int validSchedules = 0;
-
-        for (int x=0; x<courses.size()-2; x++){
-            for (int y=x+1; y < courses.size()-1;y++){
+        //int total=0;
+        validSchedules = 0;
+        
+            //handles priorities at the beginning of the array
+        int xStopValue = priorities;
+        int yStopValue = priorities;
+        if (xStopValue == 0) xStopValue = courses.size()-2;
+        if (yStopValue < 2) yStopValue = courses.size()-1;
+        for (int x=0; x<xStopValue; x++){
+            for (int y=x+1; y < yStopValue;y++){
                 for (int z=y+1; z<courses.size(); z++){
 
                     if (val3(courses.get(x),courses.get(y),courses.get(z))){
@@ -133,31 +158,9 @@ public void sortedAdd(Course course) {
                         tempSchedule.add(courses.get(x));
                         tempSchedule.add(courses.get(y));
                         tempSchedule.add(courses.get(z));
-
-                        if(validSchedules < 3){
-                            schedules[validSchedules] = tempSchedule;
-                            validSchedules++;
-                                //check if 1 and 2 are in the right order
-                            if (validSchedules == 2 && schedules[0].totalRating()
-                                    <schedules[1].totalRating()){
-                                Schedule t = schedules[0];
-                                schedules[0] = schedules[1];
-                                schedules[1] = t;
-                            }
-                            else if (validSchedules == 3)
-                                sortOptimizedSchedules();
-                        } // haven't filled valid schedules yet
-
-                        else if (schedules[2].totalRating()
-                                    < tempSchedule.totalRating()){
-                            schedules[2]=tempSchedule;
-                            sortOptimizedSchedules();
-                        }
-
-
-
+                        
+                        addOptimized(tempSchedule);
                     }
-
                 }
             } // end y for loop
         }// end x for loop
@@ -165,26 +168,119 @@ public void sortedAdd(Course course) {
     }
 
     public void optimize4(){
+        schedules = new Schedule[3];
+        //int total=0;
+        validSchedules = 0;
+        
+            //handles priorities at the beginning of the array
+        int wStopValue = priorities;
+        int xStopValue = priorities;
+        int yStopValue = priorities;
+        if (wStopValue == 0) wStopValue = courses.size()-3;
+        if (xStopValue < 2) xStopValue = courses.size()-2;
+        if (yStopValue < 3) yStopValue = courses.size()-1;
+        for (int w=0; w<wStopValue; w++){
+        for (int x=w+1; x<xStopValue; x++){
+            for (int y=x+1; y < yStopValue;y++){
+                for (int z=y+1; z<courses.size(); z++){
 
+                    if (val4(courses.get(w),courses.get(x),courses.get(y),courses.get(z))){
+
+                        Schedule tempSchedule = new Schedule();
+                        tempSchedule.add(courses.get(w));
+                        tempSchedule.add(courses.get(x));
+                        tempSchedule.add(courses.get(y));
+                        tempSchedule.add(courses.get(z));
+                        
+                        addOptimized(tempSchedule);
+                    }
+                }
+            } // end y for loop
+        }// end x for loop
+        }   // end w for loop
 
     }
 
     public void optimize5(){
+        schedules = new Schedule[3];
+        int total=0;
+        validSchedules = 0;
+        
+            //handles priorities at the beginning of the array
+        int uStopValue = priorities;
+        int wStopValue = priorities;
+        int xStopValue = priorities;
+        int yStopValue = priorities;
+        if (priorities == 0) 
+            uStopValue = courses.size()-4; 
+        if (priorities < 2) 
+            wStopValue = courses.size()-3;
+        if (priorities < 3) 
+            xStopValue = courses.size()-2;
+        if (priorities < 4) 
+            yStopValue = courses.size()-1;
+        for (int u=0; u<uStopValue; u++){
+        for (int w=u+1; w<wStopValue; w++){
+        for (int x=w+1; x<xStopValue; x++){
+            for (int y=x+1; y < yStopValue;y++){
+                for (int z=y+1; z<courses.size(); z++){
+
+                    if (val5(courses.get(u),courses.get(w),courses.get(x),courses.get(y),courses.get(z))){
+
+                        Schedule tempSchedule = new Schedule();
+                        tempSchedule.add(courses.get(u));
+                        tempSchedule.add(courses.get(w));
+                        tempSchedule.add(courses.get(x));
+                        tempSchedule.add(courses.get(y));
+                        tempSchedule.add(courses.get(z));
+                        
+                        addOptimized(tempSchedule);
+                    }
+                }
+            } // end y for loop
+        }// end x for loop
+        }   // end w for loop
+        }
 
 
     }
 
+    public void addOptimized(Schedule tempSchedule){
+        // haven't filled valid schedule array
+                        if(validSchedules < 3){
+                            schedules[validSchedules] = tempSchedule;
+                            validSchedules++;
+                            if (validSchedules>2) sortOptimizedSchedules();
+                            if (validSchedules==2 && schedules[0].totalRating()
+                                    < schedules[1].totalRating()){
+                                Schedule t = schedules[0];
+                                schedules[0] = schedules[1];
+                                schedules[1] = t;
+                            }
+                        } // haven't filled valid schedules yet
+
+                        else if (schedules[2].totalRating()
+                                    < tempSchedule.totalRating()){
+                            schedules[2]=tempSchedule;
+                            sortOptimizedSchedules();
+                        }
+        
+    }
+  
     public void sortOptimizedSchedules(){
-        if (schedules[2].totalRating() > schedules[1].totalRating()){
-            Schedule t = schedules[2];
-            schedules[2] = schedules[1];
-            schedules[1] = t;
+            // selection sort of the small array of optimized schedules
+        for (int i = 0; i < schedules.length - 1; i++)
+        {
+            int index = i;
+            for (int j = i + 1; j < schedules.length; j++){
+                if (schedules[j].totalRating() > schedules[i].totalRating())
+                    index = j;
+            }
+            Schedule t = schedules[index]; 
+            schedules[index] = schedules[i];
+            schedules[i] = t;
         }
-        if (schedules[1].totalRating() > schedules[0].totalRating()){
-            Schedule t = schedules[0];
-            schedules[0] = schedules[1];
-            schedules[1] = t;
-        }
+        
     }
 
     public boolean val3(Course a, Course b, Course c){
@@ -192,7 +288,35 @@ public void sortedAdd(Course course) {
             return false;
         return true;
     }
-
+    public boolean val4(Course a, Course b, Course c, Course d){
+        Course [] A = new Course[4];
+        A[0]=a; 
+        A[1]=b;
+        A[2]=c;
+        A[3]=d;
+        for (int h = 0; h<3;h++){
+            for (int k = h+1; k<4;k++){
+                if (A[h].courseOverlap(A[k])) return false;
+            }
+        }
+        return true;
+    }
+    
+    public boolean val5(Course a, Course b, Course c, Course d, Course e){
+        Course [] A = new Course[5];
+        A[0]=a; 
+        A[1]=b;
+        A[2]=c;
+        A[3]=d;
+        A[4]=e;
+        for (int h = 0; h<4;h++){
+            for (int k = h+1; k<5;k++){
+                if (A[h].courseOverlap(A[k])) return false;
+            }
+        }
+        return true;
+    }
+    
     public void printCourses() {
         List<String> printedCourses = new ArrayList<String>();
         System.out.println("Classes Added:");
